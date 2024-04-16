@@ -10,7 +10,9 @@ class LSTMModel(nn.Module):
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
         # Dropout layer
         self.dropout = nn.Dropout(0.5)
-        self.fc = nn.Linear(hidden_size, num_classes)
+        self.relu = nn.ReLU()
+        self.fc = nn.Linear(hidden_size, 16)
+        self.fc2 = nn.Linear(16, num_classes)
 
     def forward(self, x):
         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
@@ -18,7 +20,11 @@ class LSTMModel(nn.Module):
         # LSTM 层
         out, _ = self.lstm(x, (h0, c0))
         out = out[:, -1, :]
-        out = self.dropout(out)
+        out = self.relu(out)
+        # out = self.dropout(out)
         out = self.fc(out)
+        out = self.relu(out)
+        # out = self.dropout(out)
+        out = self.fc2(out)
 
         return out
