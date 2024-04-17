@@ -13,6 +13,7 @@ class LSTMModel(nn.Module):
         self.relu = nn.ReLU()
         self.fc = nn.Linear(hidden_size, 16)
         self.fc2 = nn.Linear(16, num_classes)
+        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
@@ -20,11 +21,14 @@ class LSTMModel(nn.Module):
         # LSTM 层
         out, _ = self.lstm(x, (h0, c0))
         out = out[:, -1, :]
+
         out = self.relu(out)
-        # out = self.dropout(out)
+        out = self.dropout(out)
         out = self.fc(out)
+
         out = self.relu(out)
-        # out = self.dropout(out)
+        out = self.dropout(out)
         out = self.fc2(out)
 
+        out = self.softmax(out)
         return out
