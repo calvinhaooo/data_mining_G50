@@ -3,7 +3,7 @@ from torch import nn
 
 
 class LSTMModel(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, num_classes):
+    def __init__(self, input_size, hidden_size, num_layers, num_classes, classification=True):
         super(LSTMModel, self).__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
@@ -14,6 +14,7 @@ class LSTMModel(nn.Module):
         self.fc = nn.Linear(hidden_size, 16)
         self.fc2 = nn.Linear(16, num_classes)
         self.softmax = nn.Softmax(dim=1)
+        self.classification = classification
 
     def forward(self, x):
         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
@@ -23,12 +24,15 @@ class LSTMModel(nn.Module):
         out = out[:, -1, :]
 
         out = self.relu(out)
-        out = self.dropout(out)
+        if self.classification:
+            out = self.dropout(out)
         out = self.fc(out)
 
         out = self.relu(out)
-        out = self.dropout(out)
+        if self.classification:
+            out = self.dropout(out)
         out = self.fc2(out)
 
-        out = self.softmax(out)
+        if self.classification:
+            out = self.softmax(out)
         return out
