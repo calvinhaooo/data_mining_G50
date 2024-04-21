@@ -14,3 +14,12 @@ MAE对异常点有更好的鲁棒性
 MSE对误差取了平方，相对于使用MAE计算损失，使用MSE的模型会赋予异常点更大的权重
 
 MAE存在一个严重的问题（特别是对于神经网络）：更新的梯度始终相同，也就是说，即使对于很小的损失值，梯度也很大。这样不利于模型的学习
+
+## ranking 
+RankNet、LambdaMART、RankBoost
+
+### Stacking
+
+#### LambdaMART
+
+
