@@ -17,6 +17,9 @@ MAE存在一个严重的问题（特别是对于神经网络）：更新的梯�
 
 ## ranking 
 RankNet、LambdaMART、RankBoost
+在ranking的情况下，数据集一般都需要被格式化为group input，rank page数据是根据不同的queries分到各groups的
+将数据集按照搜索 ID（srch_id）进行分组
+![image](https://github.com/calvinhaooo/data_mining_G50/assets/145342600/338c662a-9ca3-4db4-9319-e2522b00cd7c)
 
 ### Stacking
 
